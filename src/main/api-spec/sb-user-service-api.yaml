@@ -1,6 +1,6 @@
 openapi: "3.0.3"
 info:
-  version: 0.0.3
+  version: 0.0.4
   title: Sample Petstore
   license:
     name: Copyright by sb-user-service-api-spec, all rights reserved.
