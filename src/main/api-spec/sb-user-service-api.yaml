@@ -10,7 +10,7 @@ tags:
 paths:
   /users:
     get:
-      summary: Retrieve list of users
+      summary: Retrieve a list of users
       operationId: getUsers
       tags:
         - users
@@ -143,12 +143,11 @@ paths:
                   example: "Doe"
                 gender:
                   type: string
-                  format: open-enumeration
-                  description: |
-                    Gender of the user
-                    * MALE
-                    * FEMALE
-                    * OTHER
+                  enum:
+                    - MALE
+                    - FEMALE
+                    - OTHER
+                  description: Gender of the user
                   example: "MALE"
                 phone:
                   type: string
@@ -206,12 +205,11 @@ paths:
                   example: "Doe"
                 gender:
                   type: string
-                  format: open-enumeration
-                  description: |
-                    Gender of the user
-                    * MALE
-                    * FEMALE
-                    * OTHER
+                  enum:
+                    - MALE
+                    - FEMALE
+                    - OTHER
+                  description: Gender of the user
                   example: "MALE"
                 phone:
                   type: string
@@ -262,7 +260,7 @@ security:
 
 components:
   securitySchemes:
-    bearerAuth:
+    BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
@@ -295,12 +293,11 @@ components:
           example: "Doe"
         gender:
           type: string
-          format: open-enumeration
-          description: |
-            Gender of the user
-            * MALE
-            * FEMALE
-            * OTHER
+          enum:
+            - MALE
+            - FEMALE
+            - OTHER
+          description: Gender of the user
           example: "MALE"
         phone:
           type: string
