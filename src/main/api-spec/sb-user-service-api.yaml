@@ -1,6 +1,6 @@
 openapi: "3.0.3"
 info:
-  version: 1.0.1
+  version: 1.1.0
   title: The user service API
 
 tags:
@@ -44,35 +44,29 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                  description: Unique username for the user.
-                  maxLength: 64
-                  minLength: 8
-                  example: "johndoe123"
-                email:
-                  type: string
-                  description: Email address of the user.
-                  format: email
-                  example: "johndoe123@gmail.com"
-                firstName:
-                  type: string
-                  description: First name of the user.
-                  example: "John"
-                lastName:
-                  type: string
-                  description: Last name of the user.
-                  example: "Doe"
-              required:
-                - username
-                - email
-                - firstName
-                - lastName
+              allOf:
+                - $ref: "#/components/schemas/User"
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                  required:
+                    - username
+                    - email
+                    - firstName
+                    - lastName
       responses:
         201:
           description: User created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Unique identifier for the created user (UUID).
+                    example: "f7b3f1b1-5b7b-4b3b-8b3b-7b3b1f7b3b1f"
           headers:
             Location:
               description: The location of the created user
@@ -126,40 +120,16 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  description: Email address to update to.
-                  format: email
-                  example: "johndoe123@gmail.com"
-                firstName:
-                  type: string
-                  description: First name to update to.
-                  example: "John"
-                lastName:
-                  type: string
-                  description: Last name to update to.
-                  example: "Doe"
-                gender:
-                  type: string
-                  enum:
-                    - MALE
-                    - FEMALE
-                    - OTHER
-                  description: Gender of the user
-                  example: "MALE"
-                phone:
-                  type: string
-                  description: Phone number of the user.
-                  example: "1234567890"
-                birthDate:
-                  type: string
-                  format: date
-                  description: Birth date of the user. Format is "YYYY-MM-DD" (ISO 8601).
-                  example: "1990-01-01"
-              required:
-                - email
+              allOf:
+                - $ref: "#/components/schemas/User"
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                    username:
+                      readOnly: true
+                  required:
+                    - email
       responses:
         200:
           description: User updated
@@ -188,38 +158,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  description: Email address to update to.
-                  format: email
-                  example: "johndoe123@gmail.com"
-                firstName:
-                  type: string
-                  description: First name to update to.
-                  example: "John"
-                lastName:
-                  type: string
-                  description: Last name to update to.
-                  example: "Doe"
-                gender:
-                  type: string
-                  enum:
-                    - MALE
-                    - FEMALE
-                    - OTHER
-                  description: Gender of the user
-                  example: "MALE"
-                phone:
-                  type: string
-                  description: Phone number of the user.
-                  example: "1234567890"
-                birthDate:
-                  type: string
-                  format: date
-                  description: Birth date of the user. Format is "YYYY-MM-DD" (ISO 8601).
-                  example: "1990-01-01"
+              allOf:
+                - $ref: "#/components/schemas/User"
+                - type: object
+                  properties:
+                    id:
+                      readOnly: true
+                    username:
+                      readOnly: true
       responses:
         200:
           description: User updated
@@ -266,22 +212,24 @@ components:
       bearerFormat: JWT
   schemas:
     User:
+      type: object
       properties:
         id:
           type: string
-          format: uuid
+          readOnly: true
           description: Unique identifier for the user (UUID).
           example: "f7b3f1b1-5b7b-4b3b-8b3b-7b3b1f7b3b1f"
         username:
           type: string
-          description: Unique username for the user.
           maxLength: 64
           minLength: 8
+          description: Unique username for the user.
           example: "johndoe123"
         email:
           type: string
           description: Email address of the user.
           format: email
+          maxLength: 255
           example: "johndoe@gmail.com"
         firstName:
           type: string
@@ -293,11 +241,12 @@ components:
           example: "Doe"
         gender:
           type: string
-          enum:
-            - MALE
-            - FEMALE
-            - OTHER
-          description: Gender of the user
+          format: open-enumeration
+          description: |
+            Gender of the user
+            * MALE
+            * FEMALE
+            * OTHER
           example: "MALE"
         phone:
           type: string
