@@ -19,11 +19,37 @@ paths:
         - $ref: "#/components/parameters/limit"
       responses:
         200:
-          description: An array of users (paged)
+          description: An array of users (paged).
           content:
             application/json:
               schema:
-                type: array
+                type: object
+                properties:
+                  totalItems:
+                    type: integer
+                    description: The total number of users available.
+                    example: 100
+                  numberOfItems:
+                    type: integer
+                    description: The number of users returned in this response.
+                    example: 20
+                  offset:
+                    type: integer
+                    description: The number of items to skip before starting to collect the result set.
+                    example: 0
+                  limit:
+                    type: integer
+                    description: The number of items to return.
+                    example: 20
+                  hasNext:
+                    type: boolean
+                    description: A flag indicating whether there are more items available.
+                    example: true
+                  items:
+                    type: array
+                    description: An array of users.
+                    items:
+                      $ref: "#/components/schemas/User"
                 items:
                   $ref: "#/components/schemas/User"
         401:
@@ -249,14 +275,74 @@ components:
             * OTHER
           example: "MALE"
         phone:
-          type: string
+          type: object
           description: Phone number of the user.
-          example: "1234567890"
+          properties:
+            countryCode:
+              type: string
+              description: Country code of the phone number.
+              example: "+84"
+            number:
+              type: string
+              description: Number of the phone number.
+              example: "123456789"
         birthDate:
           type: string
           format: date
           description: Birth date of the user. Format is "YYYY-MM-DD" (ISO 8601).
           example: "1990-01-01"
+        address:
+          type: object
+          properties:
+            number:
+              type: string
+              description: Number of the address.
+              example: "123"
+            street:
+              type: string
+              description: Street address of the user.
+              example: "Hoa Binh St"
+            ward:
+              type: string
+              description: Ward of the user.
+              example: "An Lac"
+            district:
+              type: string
+              description: District of the user.
+              example: "Ninh Kieu"
+            city:
+              type: string
+              description: City of the user.
+              example: "Can Tho"
+            province:
+              type: string
+              description: Province of the user.
+              example: "Can Tho"
+            country:
+              type: string
+              description: Country of the user. ISO 3166-1 alpha-2 code.
+              example: "VN"
+        status:
+          type: string
+          format: open-enumeration
+          description: |
+            Status of the user
+            * ACTIVE
+            * INACTIVE
+            * SUSPENDED
+          example: "ACTIVE"
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time when the user was created. Format is "YYYY-MM-DDTHH:MM:SSZ" (ISO 8601).
+          example: "2021-01-01T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Date and time when the user was last updated. Format is "YYYY-MM-DDTHH:MM:SSZ" (ISO 8601).
+          example: "2021-01-01T12:00:00Z"
   parameters:
     offset:
       name: offset
