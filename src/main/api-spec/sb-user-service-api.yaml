@@ -50,8 +50,6 @@ paths:
                     description: An array of users.
                     items:
                       $ref: "#/components/schemas/User"
-                items:
-                  $ref: "#/components/schemas/User"
         401:
           description: Unauthorized
         403:
