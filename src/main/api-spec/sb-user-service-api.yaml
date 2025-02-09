@@ -49,7 +49,7 @@ paths:
                     type: array
                     description: An array of users.
                     items:
-                      $ref: "#/components/schemas/User"
+                      $ref: "#/components/schemas/UserDTO"
         401:
           description: Unauthorized
         403:
@@ -69,7 +69,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/User"
+                - $ref: "#/components/schemas/UserDTO"
                 - type: object
                   properties:
                     id:
@@ -79,6 +79,8 @@ paths:
                     - email
                     - firstName
                     - lastName
+                    - createdAt
+                    - updatedAt
       responses:
         201:
           description: User created
@@ -123,7 +125,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/UserDTO"
         401:
           description: Unauthorized
         403:
@@ -145,12 +147,16 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/User"
+                - $ref: "#/components/schemas/UserDTO"
                 - type: object
                   properties:
                     id:
                       readOnly: true
                     username:
+                      readOnly: true
+                    addresses:
+                      readOnly: true
+                    phone:
                       readOnly: true
                   required:
                     - email
@@ -183,12 +189,16 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/User"
+                - $ref: "#/components/schemas/UserDTO"
                 - type: object
                   properties:
                     id:
                       readOnly: true
                     username:
+                      readOnly: true
+                    addresses:
+                      readOnly: true
+                    phone:
                       readOnly: true
       responses:
         200:
@@ -235,7 +245,7 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    User:
+    UserDTO:
       type: object
       properties:
         id:
@@ -289,37 +299,49 @@ components:
           format: date
           description: Birth date of the user. Format is "YYYY-MM-DD" (ISO 8601).
           example: "1990-01-01"
-        address:
-          type: object
-          properties:
-            number:
-              type: string
-              description: Number of the address.
-              example: "123"
-            street:
-              type: string
-              description: Street address of the user.
-              example: "Hoa Binh St"
-            ward:
-              type: string
-              description: Ward of the user.
-              example: "An Lac"
-            district:
-              type: string
-              description: District of the user.
-              example: "Ninh Kieu"
-            city:
-              type: string
-              description: City of the user.
-              example: "Can Tho"
-            province:
-              type: string
-              description: Province of the user.
-              example: "Can Tho"
-            country:
-              type: string
-              description: Country of the user. ISO 3166-1 alpha-2 code.
-              example: "VN"
+        addresses:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                readOnly: true
+                description: Unique identifier for the address (UUID).
+                example: "f7b3f1b1-5b7b-4b3b-8b3b-7b3b1f7b3b1f"
+              type:
+                type: string
+                format: open-enumeration
+                description: |
+                  Type of the address
+                  * HOME
+                  * WORK
+                  * OTHER
+                example: "HOME"
+              street:
+                type: string
+                description: Street of the address.
+                example: "123 Main St"
+              ward:
+                type: string
+                description: Ward of the address.
+                example: "Ward 1"
+              district:
+                type: string
+                description: District of the address.
+                example: "District 1"
+              city:
+                type: string
+                description: City of the address.
+                example: "Springfield"
+              postalCode:
+                type: string
+                description: Postal code of the address.
+                example: "62701"
+              default:
+                type: boolean
+                description: A flag indicating whether this is the default address.
+                example: true
         status:
           type: string
           format: open-enumeration
@@ -351,6 +373,7 @@ components:
         type: integer
         format: int32
         default: 0
+        minimum: 0
         example: 0
     limit:
       name: limit
@@ -361,6 +384,7 @@ components:
         type: integer
         format: int32
         default: 20
+        minimum: 1
         example: 20
     userId:
       name: userId
