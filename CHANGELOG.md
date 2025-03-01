@@ -1,4 +1,4 @@
-# sb-user-service-api-spec
+# user-service-api
 
 All notable changes to this project will be documented in this file.
 
