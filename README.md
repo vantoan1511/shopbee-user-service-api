@@ -1,6 +1,6 @@
-# sb-user-service-api-spec
+# shopbee-user-service-api
 
-The implementation of the sb-user-service-api-spec.
+The implementation of the shopbee-user-service-api.
 
 ## Getting Started
 

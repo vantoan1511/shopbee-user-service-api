@@ -1,6 +1,6 @@
 openapi: "3.0.3"
 info:
-  version: 1.2.1
+  version: 1.0.0
   title: The user service API
 
 tags:
@@ -25,41 +25,21 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  totalItems:
-                    type: integer
-                    description: The total number of users available.
-                    example: 100
-                  numberOfItems:
-                    type: integer
-                    description: The number of users returned in this response.
-                    example: 20
-                  offset:
-                    type: integer
-                    description: The number of items to skip before starting to collect the result set.
-                    example: 0
-                  limit:
-                    type: integer
-                    description: The number of items to return.
-                    example: 20
-                  hasNext:
-                    type: boolean
-                    description: A flag indicating whether there are more items available.
-                    example: true
-                  items:
-                    type: array
-                    description: An array of users.
-                    items:
-                      $ref: "#/components/schemas/UserDTO"
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
         401:
-          description: Unauthorized
+          description: "Unauthorized: JWT token is missing or invalid"
         403:
-          description: Forbidden
+          description: "Forbidden: The caller does not have permission"
         404:
-          description: Not Found
+          description: "Not Found: The requested resource is not found"
+        500:
+          description: "Internal Server Error: An unexpected error occurred"
+        501:
+          description: "Not Implemented: The operation is not implemented"
         503:
-          description: Service Unavailable
+          description: "Service Unavailable: The service is temporarily unavailable"
     post:
       summary: Create a new user
       operationId: createUser
@@ -71,7 +51,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/UserDTO"
+                - $ref: "#/components/schemas/User"
                 - type: object
                   properties:
                     id:
@@ -81,20 +61,15 @@ paths:
                     - email
                     - firstName
                     - lastName
-                    - createdAt
-                    - updatedAt
       responses:
         201:
           description: User created
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: Unique identifier for the created user (UUID).
-                    example: "f7b3f1b1-5b7b-4b3b-8b3b-7b3b1f7b3b1f"
+                type: string
+                description: Unique identifier for the created user (UUID).
+                example: "f7b3f1b1-5b7b-4b3b-8b3b-7b3b1f7b3b1f"
           headers:
             Location:
               description: The location of the created user
@@ -103,15 +78,19 @@ paths:
                 format: uri
                 example: "/users/f7b3f1b1-5b7b-4b3b-8b3b-7b3b1f7b3b1f"
         400:
-          description: Bad Request
+          description: "Bad Request: The request is invalid due to malformed syntax or validation error"
         401:
-          description: Unauthorized
+          description: "Unauthorized: JWT token is missing or invalid"
         403:
-          description: Forbidden
+          description: "Forbidden: The caller does not have permission"
         409:
-          description: Conflict
+          description: "Conflict: The request could not be completed due to a conflict with the current state of the resource"
+        500:
+          description: "Internal Server Error: An unexpected error occurred"
+        501:
+          description: "Not Implemented: The operation is not implemented"
         503:
-          description: Service Unavailable
+          description: "Service Unavailable: The service is temporarily unavailable"
 
   /users/{userId}:
     get:
@@ -123,19 +102,21 @@ paths:
         - $ref: "#/components/parameters/userId"
       responses:
         200:
-          description: User found
+          description: "User found"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserDTO"
+                $ref: "#/components/schemas/User"
         401:
-          description: Unauthorized
+          description: "Unauthorized: JWT token is missing or invalid"
         403:
-          description: Forbidden
-        404:
-          description: Not Found
+          description: "Forbidden: The caller does not have permission"
+        500:
+          description: "Internal Server Error: An unexpected error occurred"
+        501:
+          description: "Not Implemented: The operation is not implemented"
         503:
-          description: Service Unavailable
+          description: "Service Unavailable: The service is temporarily unavailable"
     put:
       summary: Update a user by ID
       operationId: updateUserById
@@ -149,7 +130,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/UserDTO"
+                - $ref: "#/components/schemas/User"
                 - type: object
                   properties:
                     id:
@@ -164,19 +145,21 @@ paths:
                     - email
       responses:
         200:
-          description: User updated
+          description: "User updated"
         400:
-          description: Bad Request
+          description: "Bad Request: The request is invalid due to malformed syntax or validation error"
         401:
-          description: Unauthorized
+          description: "Unauthorized: JWT token is missing or invalid"
         403:
-          description: Forbidden
-        404:
-          description: Not Found
+          description: "Forbidden: The caller does not have permission"
         409:
-          description: Conflict
+          description: "Conflict: The request could not be completed due to a conflict with the current state of the resource"
+        500:
+          description: "Internal Server Error: An unexpected error occurred"
+        501:
+          description: "Not Implemented: The operation is not implemented"
         503:
-          description: Service Unavailable
+          description: "Service Unavailable: The service is temporarily unavailable"
 
     patch:
       summary: Partially update a user by ID
@@ -191,7 +174,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/UserDTO"
+                - $ref: "#/components/schemas/User"
                 - type: object
                   properties:
                     id:
@@ -204,19 +187,21 @@ paths:
                       readOnly: true
       responses:
         200:
-          description: User updated
+          description: "User updated"
         400:
-          description: Bad Request
+          description: "Bad Request: The request is invalid due to malformed syntax or validation error"
         401:
-          description: Unauthorized
+          description: "Unauthorized: JWT token is missing or invalid"
         403:
-          description: Forbidden
-        404:
-          description: Not Found
+          description: "Forbidden: The caller does not have permission"
         409:
-          description: Conflict
+          description: "Conflict: The request could not be completed due to a conflict with the current state of the resource"
+        500:
+          description: "Internal Server Error: An unexpected error occurred"
+        501:
+          description: "Not Implemented: The operation is not implemented"
         503:
-          description: Service Unavailable
+          description: "Service Unavailable: The service is temporarily unavailable"
 
     delete:
       summary: Delete a user by ID
@@ -227,15 +212,19 @@ paths:
         - $ref: "#/components/parameters/userId"
       responses:
         204:
-          description: User deleted
+          description: "User deleted"
         401:
-          description: Unauthorized
+          description: "Unauthorized: JWT token is missing or invalid"
         403:
-          description: Forbidden
+          description: "Forbidden: The caller does not have permission"
         404:
-          description: Not Found
+          description: "Not Found: The requested resource is not found"
+        500:
+          description: "Internal Server Error: An unexpected error occurred"
+        501:
+          description: "Not Implemented: The operation is not implemented"
         503:
-          description: Service Unavailable
+          description: "Service Unavailable: The service is temporarily unavailable"
 
   /users/{userId}/addresses:
     get:
@@ -245,23 +234,27 @@ paths:
         - addresses
       parameters:
         - $ref: "#/components/parameters/userId"
+        - $ref: "#/components/parameters/offset"
+        - $ref: "#/components/parameters/limit"
       responses:
         200:
-          description: An array of addresses for the user.
+          description: "An array of addresses for the user"
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/AddressDTO"
+                  $ref: "#/components/schemas/Address"
         401:
-          description: Unauthorized
+          description: "Unauthorized: JWT token is missing or invalid"
         403:
-          description: Forbidden
-        404:
-          description: Not Found
+          description: "Forbidden: The caller does not have permission"
+        500:
+          description: "Internal Server Error: An unexpected error occurred"
+        501:
+          description: "Not Implemented: The operation is not implemented"
         503:
-          description: Service Unavailable
+          description: "Service Unavailable: The service is temporarily unavailable"
     post:
       summary: Create a new address for a user
       operationId: createUserAddress
@@ -275,7 +268,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/AddressDTO"
+                - $ref: "#/components/schemas/Address"
                 - type: object
                   properties:
                     id:
@@ -288,24 +281,33 @@ paths:
                     - postalCode
       responses:
         201:
-          description: Address created
+          description: "Address created"
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: Unique identifier for the created address (UUID).
-                    example: "f7b3f1b1-5b7b-4b3b-8b3b-7b3b1f7b3b1f"
+                type: string
+                description: Unique identifier for the created address (UUID).
+                example: "f7b3f1b1-5b7b-4b3b-8b3b-7b3b1f7b3b1f"
+          headers:
+            Location:
+              description: The location of the created address
+              schema:
+                type: string
+                format: uri
+                example: "/users/f7b3f1b1-5b7b-4b3b-8b3b-7b3b1f7b3b1f/addresses/f7b3f1b1-5b7b-4b3b-8b3b-7b3b1f7b3b1f"
+                    
         400:
-          description: Bad Request
+          description: "Bad Request: The request is invalid due to malformed syntax or validation error"
         401:
-          description: Unauthorized
+          description: "Unauthorized: JWT token is missing or invalid"
         403:
-          description: Forbidden
+          description: "Forbidden: The caller does not have permission"
+        500:
+          description: "Internal Server Error: An unexpected error occurred"
+        501:
+          description: "Not Implemented: The operation is not implemented"
         503:
-          description: Service Unavailable
+          description: "Service Unavailable: The service is temporarily unavailable"
 
   /users/{userId}/addresses/{addressId}:
     put:
@@ -322,7 +324,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/AddressDTO"
+                - $ref: "#/components/schemas/Address"
                 - type: object
                   properties:
                     id:
@@ -335,19 +337,21 @@ paths:
                     - postalCode
       responses:
         200:
-          description: Address updated
+          description: "Address updated"
         400:
-          description: Bad Request
+          description: "Bad Request: The request is invalid due to malformed syntax or validation error"
         401:
-          description: Unauthorized
+          description: "Unauthorized: JWT token is missing or invalid"
         403:
-          description: Forbidden
-        404:
-          description: Not Found
+          description: "Forbidden: The caller does not have permission"
+        500:
+          description: "Internal Server Error: An unexpected error occurred"
+        501:
+          description: "Not Implemented: The operation is not implemented"
         503:
-          description: Service Unavailable
+          description: "Service Unavailable: The service is temporarily unavailable"
     patch:
-      summary: Partially update an address for a user
+      summary: Patch an address for a user
       operationId: patchUserAddress
       tags:
         - addresses
@@ -360,24 +364,26 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/AddressDTO"
+                - $ref: "#/components/schemas/Address"
                 - type: object
                   properties:
                     id:
                       readOnly: true
       responses:
         200:
-          description: Address updated
+          description: "Address updated"
         400:
-          description: Bad Request
+          description: "Bad Request: The request is invalid due to malformed syntax or validation error"
         401:
-          description: Unauthorized
+          description: "Unauthorized: JWT token is missing or invalid"
         403:
-          description: Forbidden
-        404:
-          description: Not Found
+          description: "Forbidden: The caller does not have permission"
+        500:
+          description: "Internal Server Error: An unexpected error occurred"
+        501:
+          description: "Not Implemented: The operation is not implemented"
         503:
-          description: Service Unavailable
+          description: "Service Unavailable: The service is temporarily unavailable"
     delete:
       summary: Delete an address for a user
       operationId: deleteUserAddress
@@ -388,15 +394,17 @@ paths:
         - $ref: "#/components/parameters/addressId"
       responses:
         204:
-          description: Address deleted
+          description: "Address deleted"
         401:
-          description: Unauthorized
+          description: "Unauthorized: JWT token is missing or invalid"
         403:
-          description: Forbidden
-        404:
-          description: Not Found
+          description: "Forbidden: The caller does not have permission"
+        500:
+          description: "Internal Server Error: An unexpected error occurred"
+        501:
+          description: "Not Implemented: The operation is not implemented"
         503:
-          description: Service Unavailable
+          description: "Service Unavailable: The service is temporarily unavailable"
 
 security:
   - BearerAuth: []
@@ -408,7 +416,7 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    AddressDTO:
+    Address:
       type: object
       properties:
         id:
@@ -445,11 +453,22 @@ components:
           type: string
           description: Postal code of the address.
           example: "62701"
-        default:
+        isDefault:
           type: boolean
           description: A flag indicating whether this is the default address.
           example: true
-    UserDTO:
+    Phone:
+      type: object
+      properties:
+        countryCode:
+          type: string
+          description: Country code of the phone number.
+          example: "+84"
+        number:
+          type: string
+          description: Number of the phone number.
+          example: "123456789"
+    User:
       type: object
       properties:
         id:
@@ -487,17 +506,7 @@ components:
             * OTHER
           example: "MALE"
         phone:
-          type: object
-          description: Phone number of the user.
-          properties:
-            countryCode:
-              type: string
-              description: Country code of the phone number.
-              example: "+84"
-            number:
-              type: string
-              description: Number of the phone number.
-              example: "123456789"
+          $ref: "#/components/schemas/Phone"
         birthDate:
           type: string
           format: date
@@ -506,7 +515,7 @@ components:
         addresses:
           type: array
           items:
-            $ref: "#/components/schemas/AddressDTO"
+            $ref: "#/components/schemas/Address"
         status:
           type: string
           format: open-enumeration
