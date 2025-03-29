@@ -17,6 +17,7 @@ paths:
       tags:
         - users
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/offset"
         - $ref: "#/components/parameters/limit"
       responses:
@@ -50,6 +51,8 @@ paths:
       operationId: createUser
       tags:
         - users
+      parameters:
+        - $ref: "#/components/parameters/tenantId"
       requestBody:
         required: true
         content:
@@ -110,6 +113,7 @@ paths:
       tags:
         - users
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
       responses:
         200:
@@ -134,6 +138,7 @@ paths:
       tags:
         - users
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
       requestBody:
         required: true
@@ -178,6 +183,7 @@ paths:
       tags:
         - users
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
       requestBody:
         required: true
@@ -220,6 +226,7 @@ paths:
       tags:
         - users
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
       responses:
         204:
@@ -244,6 +251,7 @@ paths:
       tags:
         - addresses
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/offset"
         - $ref: "#/components/parameters/limit"
@@ -272,6 +280,7 @@ paths:
       tags:
         - addresses
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
       requestBody:
         required: true
@@ -327,6 +336,7 @@ paths:
       tags:
         - addresses
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/addressId"
       requestBody:
@@ -367,6 +377,7 @@ paths:
       tags:
         - addresses
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/addressId"
       requestBody:
@@ -401,6 +412,7 @@ paths:
       tags:
         - addresses
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/addressId"
       responses:
@@ -549,6 +561,14 @@ components:
           description: Date and time when the user was last updated. Format is "YYYY-MM-DDTHH:MM:SSZ" (ISO 8601).
           example: "2021-01-01T12:00:00Z"
   parameters:
+    tenantId:
+      name: tenantId
+      in: header
+      description: The ID of the tenant.
+      required: true
+      schema:
+        type: string
+        example: "shopbee"
     offset:
       name: offset
       in: query
