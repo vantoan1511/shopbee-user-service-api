@@ -1,6 +1,6 @@
 openapi: "3.0.3"
 info:
-  version: 1.0.1
+  version: 1.1.0
   title: The user service API
 
 tags:
@@ -17,6 +17,7 @@ paths:
       tags:
         - users
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/offset"
         - $ref: "#/components/parameters/limit"
       responses:
@@ -27,7 +28,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/User"
+                  allOf:
+                    - $ref: "#/components/schemas/User"
+                    - type: object
+                      properties:
+                        addresses:
+                          writeOnly: true
         401:
           description: "Unauthorized: JWT token is missing or invalid"
         403:
@@ -45,6 +51,8 @@ paths:
       operationId: createUser
       tags:
         - users
+      parameters:
+        - $ref: "#/components/parameters/tenantId"
       requestBody:
         required: true
         content:
@@ -55,6 +63,17 @@ paths:
                 - type: object
                   properties:
                     id:
+                      readOnly: true
+                    addresses:
+                      readOnly: true
+                    phone:
+                      readOnly: true
+                    status:
+                      type: string
+                      default: "ACTIVE"
+                    createdAt:
+                      readOnly: true
+                    updatedAt:
                       readOnly: true
                   required:
                     - username
@@ -99,6 +118,7 @@ paths:
       tags:
         - users
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
       responses:
         200:
@@ -123,6 +143,7 @@ paths:
       tags:
         - users
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
       requestBody:
         required: true
@@ -140,6 +161,10 @@ paths:
                     addresses:
                       readOnly: true
                     phone:
+                      readOnly: true
+                    createdAt:
+                      readOnly: true
+                    updatedAt:
                       readOnly: true
                   required:
                     - email
@@ -167,6 +192,7 @@ paths:
       tags:
         - users
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
       requestBody:
         required: true
@@ -184,6 +210,10 @@ paths:
                     addresses:
                       readOnly: true
                     phone:
+                      readOnly: true
+                    createdAt:
+                      readOnly: true
+                    updatedAt:
                       readOnly: true
       responses:
         200:
@@ -209,6 +239,7 @@ paths:
       tags:
         - users
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
       responses:
         204:
@@ -233,6 +264,7 @@ paths:
       tags:
         - addresses
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/offset"
         - $ref: "#/components/parameters/limit"
@@ -261,6 +293,7 @@ paths:
       tags:
         - addresses
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
       requestBody:
         required: true
@@ -316,6 +349,7 @@ paths:
       tags:
         - addresses
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/addressId"
       requestBody:
@@ -356,6 +390,7 @@ paths:
       tags:
         - addresses
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/addressId"
       requestBody:
@@ -390,6 +425,7 @@ paths:
       tags:
         - addresses
       parameters:
+        - $ref: "#/components/parameters/tenantId"
         - $ref: "#/components/parameters/userId"
         - $ref: "#/components/parameters/addressId"
       responses:
@@ -538,6 +574,14 @@ components:
           description: Date and time when the user was last updated. Format is "YYYY-MM-DDTHH:MM:SSZ" (ISO 8601).
           example: "2021-01-01T12:00:00Z"
   parameters:
+    tenantId:
+      name: tenantId
+      in: header
+      description: The ID of the tenant.
+      required: true
+      schema:
+        type: string
+        example: "shopbee"
     offset:
       name: offset
       in: query
