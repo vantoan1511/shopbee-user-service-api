@@ -61,6 +61,12 @@ paths:
                   properties:
                     id:
                       readOnly: true
+                    addresses:
+                      readOnly: true
+                    phone:
+                      readOnly: true
+                    status:
+                      default: "ACTIVE"
                   required:
                     - username
                     - email
