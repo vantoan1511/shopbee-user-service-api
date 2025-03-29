@@ -27,7 +27,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/User"
+                  allOf:
+                    - $ref: "#/components/schemas/User"
+                    - type: object
+                      properties:
+                        addresses:
+                          writeOnly: true
         401:
           description: "Unauthorized: JWT token is missing or invalid"
         403:
