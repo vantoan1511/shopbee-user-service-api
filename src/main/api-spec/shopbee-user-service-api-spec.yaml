@@ -1,6 +1,6 @@
 openapi: "3.0.3"
 info:
-  version: 1.0.1
+  version: 1.1.0
   title: The user service API
 
 tags:
@@ -69,7 +69,12 @@ paths:
                     phone:
                       readOnly: true
                     status:
+                      type: string
                       default: "ACTIVE"
+                    createdAt:
+                      readOnly: true
+                    updatedAt:
+                      readOnly: true
                   required:
                     - username
                     - email
@@ -157,6 +162,10 @@ paths:
                       readOnly: true
                     phone:
                       readOnly: true
+                    createdAt:
+                      readOnly: true
+                    updatedAt:
+                      readOnly: true
                   required:
                     - email
       responses:
@@ -201,6 +210,10 @@ paths:
                     addresses:
                       readOnly: true
                     phone:
+                      readOnly: true
+                    createdAt:
+                      readOnly: true
+                    updatedAt:
                       readOnly: true
       responses:
         200:
