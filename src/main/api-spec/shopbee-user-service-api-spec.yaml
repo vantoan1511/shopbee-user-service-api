@@ -66,6 +66,8 @@ paths:
                       readOnly: true
                     addresses:
                       readOnly: true
+                    defaultAddress:
+                      readOnly: true
                     phone:
                       readOnly: true
                     status:
@@ -489,10 +491,6 @@ components:
           type: string
           description: Postal code of the address.
           example: "62701"
-        isDefault:
-          type: boolean
-          description: A flag indicating whether this is the default address.
-          example: true
     Phone:
       type: object
       properties:
@@ -552,6 +550,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Address"
+        defaultAddress:
+          type: string
+          description: "Identifier of the default address."
+          example: "f7b3f1b1-5b7b-4b3b-8b3b-7b3b1f7b3b1f"
         status:
           type: string
           format: open-enumeration
